@@ -8,6 +8,8 @@
 #ifndef _BSOD_H
 #define _BSOD_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif //__cplusplus
@@ -31,6 +33,8 @@ void _bsod(const char *fmt, const char *fine_name, int line_number, ...); //with
 void general_error(const char *error, const char *module);
 
 void temp_error(const char *error, const char *module, float t_noz, float tt_noz, float t_bed, float tt_bed);
+
+void ScreenHardFault();
 
 #ifdef __cplusplus
 }
