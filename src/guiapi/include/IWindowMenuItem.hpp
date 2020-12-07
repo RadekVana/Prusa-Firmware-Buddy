@@ -44,6 +44,7 @@ private:
     string_view_utf8 label;
     txtroll_t roll;
 
+    uint16_t extension_width;
     is_hidden_t hidden : 1;
     is_enabled_t enabled : 1;
     is_focused_t focused : 1;
@@ -51,12 +52,12 @@ private:
 protected:
     is_selected_t selected : 1; // should be in IWiSpin, but is here because of size optimization
     uint16_t id_icon : 10;
-    Rect16::Width_t extension_width;
 
     static Rect16 getCustomRect(Rect16 base_rect, uint16_t custom_rect_width); // general method Returns custom width Rectangle, aligned intersection on the right of the base_rect
     Rect16 getIconRect(Rect16 rect) const;
     Rect16 getLabelRect(Rect16 rect) const;
     Rect16 getExtensionRect(Rect16 rect) const;
+    inline Rect16::Width_t getExtensionWidth() const { return extension_width; };
 
     virtual void printIcon(Rect16 icon_rect, uint8_t swap, color_t color_back) const; //must be virtual, because pictures of flags are drawn differently
     void printLabel(Rect16 label_rect, color_t color_text, color_t color_back) const;

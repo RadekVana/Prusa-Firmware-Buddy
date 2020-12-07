@@ -14,12 +14,12 @@ IWindowMenuItem::IWindowMenuItem(string_view_utf8 label, uint16_t id_icon, is_en
 
 IWindowMenuItem::IWindowMenuItem(string_view_utf8 label, Rect16::Width_t extension_width_, uint16_t id_icon, is_enabled_t enabled, is_hidden_t hidden)
     : label(label)
+    , extension_width(extension_width_)
     , hidden(hidden)
     , enabled(enabled)
     , focused(is_focused_t::no)
     , selected(is_selected_t::no)
-    , id_icon(id_icon)
-    , extension_width(extension_width_) {
+    , id_icon(id_icon) {
 }
 
 /*****************************************************************************/
@@ -37,14 +37,14 @@ Rect16 IWindowMenuItem::getIconRect(Rect16 rect) const {
 
 Rect16 IWindowMenuItem::getLabelRect(Rect16 rect) const {
     rect -= icon_width;
-    rect -= extension_width;
+    rect -= getExtensionWidth();
     rect += Rect16::Left_t(icon_width);
     return rect;
 }
 
 Rect16 IWindowMenuItem::getExtensionRect(Rect16 rect) const {
-    rect += Rect16::Left_t(rect.Width() - extension_width);
-    rect = extension_width;
+    rect += Rect16::Left_t(rect.Width() - getExtensionWidth());
+    rect = getExtensionWidth();
     return rect;
 }
 
@@ -60,7 +60,7 @@ void IWindowMenuItem::Print(Rect16 rect) const {
 
     printIcon(getIconRect(rect), swap, GuiDefaults::MenuColorBack);
     printLabel(getLabelRect(rect), color_text, color_back);
-    if (extension_width)
+    if (getExtensionWidth())
         printExtension(getExtensionRect(rect), color_text, color_back, swap);
 }
 
