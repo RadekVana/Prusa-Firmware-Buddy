@@ -17,30 +17,72 @@ enum class fsensor_t : uint8_t {
     Disabled
 };
 
-//thread safe functions
-fsensor_t fs_get_state();
-int fs_did_filament_runout(); //for arduino / marlin
+//basic filament sensor api
+class FSensor {
+protected:
+    enum class send_M600_t : uint8_t {
+        on_edge = 0,
+        on_level = 1,
+        never = 2
+    };
 
-//switch behavior when M600 should be send
-void fs_send_M600_on_edge(); //default behavior
-void fs_send_M600_on_level();
-void fs_send_M600_never();
+    struct status_t {
+        uint8_t M600_sent;
+        send_M600_t send_M600_on;
+        uint8_t meas_cycle;
+    };
+    status_t status;
 
-//thread safe functions, but cannot be called from interrupt
-void fs_enable();
-void fs_disable();
+    bool old_fs_state;
+    bool run_first;
+    bool current_detect_filament_insert;
 
-uint8_t fs_get__send_M600_on__and_disable();
-void fs_restore__send_M600_on(uint8_t send_M600_on);
-fsensor_t fs_wait_initialized();
-void fs_clr_sent();
+    volatile fsensor_t state;
+    volatile fsensor_t last_state;
 
-//not thread safe functions
-void fs_init_on_edge();
-void fs_init_on_level();
-void fs_init_never();
-void fs_cycle(); //call it in thread, max call speed 1MHz
+    void init();
+    void set_state(fsensor_t st);
 
-//for debug
-int fs_was_M600_send();
-char fs_get_send_M600_on();
+    void restore_send_M600_on(FSensor::send_M600_t send_M600_on);
+    send_M600_t getM600_send_on_and_disable();
+
+    void injectM600();
+    void evaluate_M600_conditions();
+    void autoload_loop();
+
+    virtual void enable() = 0;
+    virtual void disable() = 0;
+    virtual void cycle() = 0;
+
+public:
+    void Cycle();
+    //thread safe functions
+    fsensor_t Get();
+    bool DidRunOut(); //for arduino / marlin
+
+    //switch behavior when M600 should be send
+    void M600_on_edge(); //default behavior
+    void M600_on_level();
+    void M600_never();
+
+    //thread safe functions, but cannot be called from interrupt
+    void Enable();
+    void Disable();
+
+    fsensor_t WaitInitialized();
+    void ClrSent();
+
+    //not thread safe functions
+    void InitOnEdge();
+    void InitOnLevel();
+    void InitNever();
+
+    //for debug
+    bool WasM600_send();
+    char GetM600_send_on();
+
+    FSensor();
+};
+
+//singleton defined in childs cpp file
+FSensor &FS_instance();
