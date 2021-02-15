@@ -63,6 +63,8 @@ protected:
     virtual void disable() = 0;
     virtual void cycle() = 0;
 
+    inline bool isEvLocked() { return event_lock > 0; }
+
 public:
     void Cycle();
     //thread safe functions
@@ -78,6 +80,9 @@ public:
     void Enable();
     void Disable();
 
+    uint32_t DecEvLock();
+    uint32_t IncEvLock();
+
     fsensor_t WaitInitialized();
     void ClrM600Sent();
     void ClrAutoloadSent();
@@ -92,14 +97,6 @@ public:
     char GetM600_send_on();
 
     FSensor();
-
-    inline uint32_t DecEvLock() {
-        if (event_lock > 0)
-            --event_lock;
-        return event_lock;
-    }
-    inline uint32_t IncEvLock() { return ++event_lock; }
-    inline bool IsEvLocked() { return event_lock > 0; }
 };
 
 //singleton defined in childs cpp file

@@ -13,6 +13,7 @@ FSensor::FSensor()
     : state(fsensor_t::NotInitialized)
     , last_state(fsensor_t::NotInitialized)
     , event_lock(0) {
+    PrintProcessor::Init();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -114,6 +115,18 @@ void FSensor::ClrAutoloadSent() {
     status.Autoload_sent = false;
 }
 
+uint32_t FSensor::DecEvLock() {
+    CriticalSection C;
+    if (event_lock > 0)
+        --event_lock;
+    return event_lock;
+}
+
+uint32_t FSensor::IncEvLock() {
+    CriticalSection C;
+    return ++event_lock;
+}
+
 /*---------------------------------------------------------------------------*/
 //global not thread safe functions
 void FSensor::init() {
@@ -145,7 +158,7 @@ void FSensor::InitNever() {
 //M600_on_level == inject on NoFilament
 //M600_never == do not inject
 void FSensor::evaluateEventConditions(event ev) {
-    if (!IsEvLocked()) {
+    if (!isEvLocked()) {
         if (PrintProcessor::IsPrinting()) {
             //M600
             if (!status.M600_sent) {
