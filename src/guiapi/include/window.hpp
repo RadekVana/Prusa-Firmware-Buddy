@@ -19,6 +19,7 @@ public:
     color_t color_back;
     Rect16 GetRect() const;
     void SetRect(Rect16 rc);
+    Rect16 TransformRect(Rect16 rc) const; // just transforms given rect, calls parrents transform if this window is relative
 
     inline Rect16::Left_t Left() const { return GetRect().Left(); }
     inline Rect16::Top_t Top() const { return GetRect().Top(); }

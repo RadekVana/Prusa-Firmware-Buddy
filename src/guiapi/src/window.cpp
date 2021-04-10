@@ -180,11 +180,26 @@ window_t::~window_t() {
 }
 
 Rect16 window_t::GetRect() const {
+    if (GetParent()) {
+        return GetParent()->TransformRect(rect); // do not use GetRect() - would be recursive
+    }
+
     return rect;
 }
 
 void window_t::SetRect(Rect16 rc) {
+    if (GetParent()) {
+        rect = GetParent()->TransformRect(rc); // do not use SetRect() - would be recursive
+    }
+
     rect = rc;
+}
+
+//TransformRect calls GetRect which calls TransformRect on parrent level ...
+Rect16 window_t::TransformRect(Rect16 rc) const {
+    Rect16 this_rect = GetRect();
+    flags.has_relative_subwins ? rc.Transform(this_rect) : rc.Cut(this_rect);
+    return rc;
 }
 
 void window_t::Reposition(Rect16::Top_t top) {
