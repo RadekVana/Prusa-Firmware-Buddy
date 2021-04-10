@@ -365,6 +365,36 @@ public:
     void Align(Rect16, Align_t);
 
     ////////////////////////////////////////////////////////////////////////////
+    /// @brief Transform current rect into given one (relative coords calculation)
+    ///        changes X and Y coordinate and can cut size to fit
+    ///
+    /// @param[in] rect Rectangle given to transform into
+    constexpr void Transform(Rect16 rect) {
+        this->operator+=(rect.TopLeft());
+        Cut(rect);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    /// @brief Cut current rect with given one (to fit)
+    ///        does not chang X and Y coordinate, can change size
+    ///
+    /// @param[in] rect Rectangle given to cut with
+    constexpr void Cut(Rect16 rect) {
+        int max_w = rect.Width() - (Left() - rect.Left());
+        int max_h = rect.Height() - (Top() - rect.Top());
+        LimitSize({ uint16_t(std::max(max_w, 0)), uint16_t(std::max(max_h, 0)) }); // std::max ensures not converting negative number to unsigned
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    /// @brief Limit size of current rect with given one
+    ///
+    /// @param[in] max_sz given size limit
+    constexpr void LimitSize(size_ui16_t max_sz) {
+        width_ = std::min(width_, max_sz.w);
+        height_ = std::min(height_, max_sz.h);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
     /// @brief Check whether rectangle is empty
     ///
     /// @return Return true if the rectangle is empty
@@ -453,6 +483,27 @@ public:
         return lhs;
     }
     friend constexpr Rect16 operator-(Rect16 lhs, H_t rhs) {
+        lhs -= rhs;
+        return lhs;
+    }
+
+    constexpr Rect16 &operator+=(point_i16_t point) {
+        top_left_.x += X_t(point.x);
+        top_left_.y += Y_t(point.y);
+        return *this;
+    }
+    constexpr Rect16 &operator-=(point_i16_t point) {
+        return operator+=({ int16_t(-point.x), int16_t(-point.y) });
+    }
+    constexpr Rect16 &operator=(point_i16_t val) {
+        top_left_ = val;
+        return *this;
+    }
+    friend constexpr Rect16 operator+(Rect16 lhs, point_i16_t rhs) {
+        lhs += rhs;
+        return lhs;
+    }
+    friend constexpr Rect16 operator-(Rect16 lhs, point_i16_t rhs) {
         lhs -= rhs;
         return lhs;
     }
