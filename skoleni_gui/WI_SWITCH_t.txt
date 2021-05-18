@@ -1,0 +1,29 @@
+@startuml
+
+title WI_SWITCH_t
+
+class WI_LABEL_t {
+    -string_view_utf8 label
+    #uint16_t id_icon
+}
+
+class WI_SWITCH_t<size_t SZ> {
+    #size_t index
+    -string_view_utf8 ArrayMemSpace[SZ]
+
+    #virtual void OnChange(size_t old_index) = 0;
+    +template <class... E> WI_SWITCH_t(int32_t index, string_view_utf8 label, uint16_t id_icon, is_enabled_t enabled, is_hidden_t hidden, E &&... e)
+}
+
+class WI_SWITCH_OFF_ON_t {
+    +WI_SWITCH_OFF_ON_t(bool index, string_view_utf8 label, uint16_t id_icon, is_enabled_t enabled, is_hidden_t hidden)
+}
+
+class WI_SWITCH_0_1_NA_t {
+    +WI_SWITCH_0_1_NA_t(state_t index, string_view_utf8 label, uint16_t id_icon, is_enabled_t enabled, is_hidden_t hidden)
+}
+
+WI_LABEL_t <|-right- WI_SWITCH_t: Inheritance
+WI_SWITCH_t <|-down- WI_SWITCH_OFF_ON_t: Inheritance <SZ->2>
+WI_SWITCH_t <|-down- WI_SWITCH_0_1_NA_t: Inheritance <SZ->3>
+@enduml

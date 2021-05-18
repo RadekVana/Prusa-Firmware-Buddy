@@ -1,0 +1,32 @@
+@startuml
+
+title Simplified GUI relationships
+
+class window_t
+class window_frame_t
+class screen_t
+class window_text_t
+class window_numb_t
+class screen_home_data_t
+class IDialog
+class MsgBox
+class ScreenMenu
+
+
+window_t <|-down- window_text_t: Inheritance
+window_t <|-down- window_numb_t: Inheritance
+window_t <|-down- window_frame_t: Inheritance
+
+window_frame_t <|-down- screen_t: Inheritance
+window_frame_t <|-down- IDialog: Inheritance
+
+IDialog <|-down- MsgBox: Inheritance
+
+screen_t <|-down- screen_home_data_t: Inheritance
+screen_t <|-down- ScreenMenu: Inheritance
+
+
+screen_home_data_t "1" *-up- "many" window_text_t: Composition
+screen_home_data_t "1" *-up- "many" window_numb_t: Composition
+
+@enduml

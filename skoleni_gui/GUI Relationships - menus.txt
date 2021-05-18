@@ -1,0 +1,29 @@
+@startuml
+
+title Simplified GUI menu relationships
+
+class window_t
+class window_frame_t
+class screen_t
+class window_menu_t
+class ScreenMenu
+class WI_LABEL_t
+class WI_SWITCH_t
+class WI_SPIN_t
+
+window_t <|-down- window_frame_t: Inheritance
+window_t <|-down- window_menu_t: Inheritance
+
+window_frame_t <|-down- screen_t: Inheritance
+
+WI_LABEL_t <|-down- WI_SWITCH_t: Inheritance
+WI_LABEL_t <|-down- WI_SPIN_t: Inheritance
+
+screen_t <|-down- ScreenMenu: Inheritance
+
+
+ScreenMenu "1" *-up- "1" window_menu_t: Composition
+
+window_menu_t "1" *-up- "many" WI_LABEL_t: Composition
+
+@enduml

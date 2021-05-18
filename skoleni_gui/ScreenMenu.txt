@@ -1,0 +1,18 @@
+@startuml
+
+title ScreenMenu
+
+class ScreenMenu<EFooter FOOTER, class... T> {
+    #window_header_t header
+    #window_menu_t menu
+    #StatusFooter footer
+    #WinMenuContainer<T...> container
+
+    +ScreenMenu(string_view_utf8 label, window_t *parent = nullptr)
+    +template <std::size_t I> decltype(auto) Item()
+    +template <class TYPE> decltype(auto) Item()
+}
+
+screen_t <|-down- ScreenMenu: Inheritance
+
+@enduml

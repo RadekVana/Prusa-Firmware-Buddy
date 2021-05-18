@@ -1,0 +1,37 @@
+@startuml
+
+title WI_SPIN_t
+
+class WI_LABEL_t {
+    -string_view_utf8 label
+    #uint16_t id_icon
+}
+
+class WI_SPIN_t<class T> {
+    #SpinTextArray spin_text_buff
+    #string_view_utf8 units
+    #SpinType value
+
+    +WI_SPIN_t(T val, const Config &cnf, string_view_utf8 label, uint16_t id_icon = 0, is_enabled_t enabled = is_enabled_t::yes, is_hidden_t hidden = is_hidden_t::no)
+    +virtual void OnClick()
+    +virtual invalidate_t Change(int dif) override
+}
+
+class SpinConfig<class T>  {
+    +std::array<T, 3> range
+    +static const char *const prt_format
+    +spin_off_opt_t off_opt
+}
+
+WI_LABEL_t <|-down- WI_SPIN_t: Inheritance
+
+WI_SPIN_t <|-down- WI_SPIN_I08_t: Inheritance <T->int8_t>
+WI_SPIN_t <|-down- WI_SPIN_I16_t: Inheritance <T->int16_t>
+WI_SPIN_t <|-down- WI_SPIN_I32_t: Inheritance <T->int32_t>
+WI_SPIN_t <|-down- WI_SPIN_U08_t: Inheritance <T->uint8_t>
+WI_SPIN_t <|-down- WI_SPIN_U16_t: Inheritance <T->uint16_t>
+WI_SPIN_t <|-down- WI_SPIN_U32_t: Inheritance <T->uint32_t>
+WI_SPIN_t <|-down- WI_SPIN_FL_t: Inheritance <T->float>
+
+WI_SPIN_t "1" *-up- "1" SpinConfig: Composition
+@enduml

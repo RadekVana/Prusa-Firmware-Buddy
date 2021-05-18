@@ -1,0 +1,24 @@
+@startuml
+
+title GUI loop
+
+
+start
+
+repeat
+    :gui::TickLoop();
+    :DialogHandler::Access().Loop();
+    :Screens::Access()->Loop();
+    :window_t::EventEncoder(encoder_diff);
+    :window_t::EventJogwheel(btn_ev);
+    :Screens::Access()->ScreenEvent(nullptr, GUI_event_t::MEDIA, (void *)int(media_state));
+    :sleep 1 - 10 ms;
+    :gui_redraw();
+    :Screens::Access()->ScreenEvent(nullptr, GUI_event_t::LOOP, 0);
+
+
+repeat while (true)
+
+stop
+
+@enduml

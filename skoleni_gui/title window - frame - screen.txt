@@ -1,0 +1,53 @@
+@startuml
+
+title window - frame - screen
+
+class window_t {
+    -window_t *parent
+    -window_t *next
+    -Rect16 rect
+    #WindowFlags flags
+    #color_t color_back
+    +void Draw()
+    +void ScreenEvent(window_t *sender, GUI_event_t event, void *param);
+    +void WindowEvent(window_t *sender, GUI_event_t event, void *param);
+    #virtual void unconditionalDraw()
+    #virtual void draw()
+    #virtual void windowEvent(EventLock, window_t *sender, GUI_event_t event, void *param)
+    #virtual void screenEvent(window_t *sender, GUI_event_t event, void *param)
+}
+
+class window_frame_t {
+    -window_t *captured_normal_window
+    -Rect16 invalid_area
+    #window_t *first_normal
+    #window_t *last_normal
+
+    #virtual void draw() override
+    #virtual void windowEvent(EventLock, window_t *sender, GUI_event_t event, void *param) override
+    #virtual void screenEvent(window_t *sender, GUI_event_t event, void *param) override
+}
+
+class screen_t {
+    -window_t *first_dialog
+    -window_t *last_dialog
+    -window_t *first_strong_dialog
+    -window_t *last_strong_dialog
+    -window_t *first_popup
+    -window_t *last_popup
+}
+
+class symblo_legend {
+    -private data member
+    #protected data member
+    +public data member
+
+    -private method()
+    #protected method()
+    +public method()
+}
+
+window_t <|-down- window_frame_t: Inheritance
+window_frame_t <|-down- screen_t: Inheritance
+
+@enduml
