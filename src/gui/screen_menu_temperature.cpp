@@ -24,7 +24,7 @@ protected:
 
 /*****************************************************************************/
 //parent alias
-using Screen = ScreenMenu<EFooter::On, MI_RETURN, MI_NOZZLE, MI_HEATBED, MI_PRINTFAN, MI_COOLDOWN>;
+using Screen = ScreenMenu<EFooter::On, MI_HOME, MI_RETURN, MI_NOZZLE, MI_HEATBED, MI_PRINTFAN, MI_COOLDOWN>;
 
 class ScreenMenuTemperature : public Screen {
 public:

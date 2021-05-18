@@ -69,3 +69,13 @@ public:
 protected:
     virtual void click(IWindowMenu &window_menu);
 };
+
+class MI_HOME : public WI_LABEL_t {
+    static constexpr const char *const label = "Home";
+
+public:
+    MI_HOME();
+
+protected:
+    virtual void click(IWindowMenu &window_menu);
+};

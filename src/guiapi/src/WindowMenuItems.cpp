@@ -25,3 +25,12 @@ MI_TEST_DISABLED_RETURN::MI_TEST_DISABLED_RETURN()
 void MI_TEST_DISABLED_RETURN::click(IWindowMenu & /*window_menu*/) {
     Screens::Access()->Close();
 }
+
+MI_HOME::MI_HOME()
+    : WI_LABEL_t(string_view_utf8::MakeCPUFLASH((const uint8_t *)label), IDR_PNG_home_shape_16px, is_enabled_t::yes, is_hidden_t::no) {
+}
+
+void MI_HOME::click(IWindowMenu &window_menu) {
+    window_menu.Validate(); /// don't redraw since we leave the menu
+    Screens::Access()->CloseAll();
+}
