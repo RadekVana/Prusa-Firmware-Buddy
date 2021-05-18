@@ -18,6 +18,7 @@
 #include "MItem_tools.hpp"
 #include "i18n.h"
 #include "Marlin/src/core/serial.h"
+#include "MItem_print.hpp"
 
 /*****************************************************************************/
 //MI_FILAMENT_SENSOR
@@ -83,7 +84,7 @@ void MI_FILAMENT_SENSOR::OnChange(size_t old_index) {
 bool MI_FILAMENT_SENSOR::fs_not_connected = false;
 
 #ifdef _DEBUG
-using Screen = ScreenMenu<EFooter::On, MI_RETURN, MI_TEMPERATURE, MI_CURRENT_PROFILE, MI_MOVE_AXIS, MI_DISABLE_STEP,
+using Screen = ScreenMenu<EFooter::On, MI_RETURN, MI_M876_XVAL, MI_TEMPERATURE, MI_CURRENT_PROFILE, MI_MOVE_AXIS, MI_DISABLE_STEP,
     MI_FOOTER_SETTINGS, MI_FACTORY_DEFAULTS, MI_SERVICE, MI_HW_SETUP, MI_TEST, MI_FW_UPDATE, MI_FILAMENT_SENSOR, MI_FS_AUTOLOAD, MI_TIMEOUT, MI_FAN_CHECK,
     #ifdef BUDDY_ENABLE_ETHERNET
     MI_LAN_SETTINGS,

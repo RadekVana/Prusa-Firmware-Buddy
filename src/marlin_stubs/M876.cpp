@@ -30,6 +30,15 @@
     #include "marlin_server.hpp"
     #include "client_fsm_types.h"
 
+    #include "menu_spin_config_type.hpp"
+    #include <algorithm>
+
+const SpinConfig_I32_t range = { { 0, 1000, 1 } };
+int32_t X_val = range.Min();
+const SpinConfig_I32_t &Get_M876_range() { return range; }
+int32_t Get_M876_XVal() { return X_val; }
+void Set_M876_XVal(int32_t val) { X_val = std::clamp<int32_t>(val, range.Min(), range.Max()); }
+
 /**
  * M876: Handle Prompt Response
  *
@@ -37,8 +46,12 @@
  * E value must be smaller than WarningType::_count
  */
 void GcodeSuite::M876() {
-    //mainly for debug
 
+    if (parser.seenval('X')) {
+        Set_M876_XVal(parser.value_int());
+    }
+
+    //mainly for debug
     if (parser.seenval('E')) {
         uint32_t val = parser.value_int();
         if (val > uint32_t(WarningType::_last))

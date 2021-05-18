@@ -48,3 +48,16 @@ MI_FLOWFACT::MI_FLOWFACT()
 void MI_FLOWFACT::OnClick() {
     marlin_set_flow_factor(GetVal());
 }
+
+/*****************************************************************************/
+//MI_M876_XVAL
+const SpinConfig_I32_t &Get_M876_range();
+int32_t Get_M876_XVal();
+void Set_M876_XVal(int32_t val);
+
+MI_M876_XVAL::MI_M876_XVAL()
+    : WI_SPIN_I32_t(Get_M876_XVal(), Get_M876_range(),
+        _(label), 0, is_enabled_t::yes, is_hidden_t::no) {}
+void MI_M876_XVAL::OnClick() {
+    Set_M876_XVal(GetVal());
+}

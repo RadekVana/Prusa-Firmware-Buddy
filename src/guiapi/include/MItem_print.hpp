@@ -43,3 +43,11 @@ public:
     MI_FLOWFACT();
     virtual void OnClick() override;
 };
+
+class MI_M876_XVAL : public WI_SPIN_I32_t {
+    constexpr static const char *label = N_("M876 X val");
+
+public:
+    MI_M876_XVAL();
+    virtual void OnClick() override;
+};
