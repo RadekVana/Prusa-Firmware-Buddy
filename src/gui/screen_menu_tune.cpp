@@ -10,7 +10,7 @@
 
 /*****************************************************************************/
 //parent alias
-using Screen = ScreenMenu<EFooter::On, MI_RETURN, MI_LIVE_ADJUST_Z, MI_M600, MI_SPEED, MI_NOZZLE,
+using Screen = ScreenMenu<EFooter::On, MI_RETURN, MI_DONT_WAIT_HEAT, MI_LIVE_ADJUST_Z, MI_M600, MI_SPEED, MI_NOZZLE,
     MI_HEATBED, MI_PRINTFAN, MI_FLOWFACT, MI_SOUND_MODE, MI_SOUND_VOLUME, MI_FAN_CHECK, MI_LAN_SETTINGS, MI_TIMEZONE, MI_VERSION_INFO,
 #ifdef _DEBUG
     MI_TEST,
@@ -37,6 +37,12 @@ void ScreenMenuTune::windowEvent(EventLock /*has private ctor*/, window_t *sende
     } else {
         Item<MI_M600>().Disable();
     }
+
+    if (Item<MI_DONT_WAIT_HEAT>().GetIndex() != MI_DONT_WAIT_HEAT::ReadCurrentState()) {
+        Item<MI_DONT_WAIT_HEAT>().SetIndex(MI_DONT_WAIT_HEAT::ReadCurrentState());
+        menu.Invalidate();
+    }
+
     SuperWindowEvent(sender, event, param);
 }
 

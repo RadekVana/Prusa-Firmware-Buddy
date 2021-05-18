@@ -48,3 +48,21 @@ MI_FLOWFACT::MI_FLOWFACT()
 void MI_FLOWFACT::OnClick() {
     marlin_set_flow_factor(GetVal());
 }
+
+/*****************************************************************************/
+//MI_DONT_WAIT_HEAT
+MI_DONT_WAIT_HEAT::MI_DONT_WAIT_HEAT()
+    : WI_SWITCH_OFF_ON_t(ReadCurrentState(), _(label), 0, is_enabled_t::yes, is_hidden_t::no) {}
+
+void MI_DONT_WAIT_HEAT::OnChange(size_t old_index) {
+    marlin_set_wait_heat(0);
+    marlin_set_wait_heat(0);
+}
+
+size_t MI_DONT_WAIT_HEAT::GetIndex() {
+    return index;
+}
+
+size_t MI_DONT_WAIT_HEAT::ReadCurrentState() {
+    return marlin_vars()->wait_heat;
+}

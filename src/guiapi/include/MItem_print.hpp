@@ -43,3 +43,13 @@ public:
     MI_FLOWFACT();
     virtual void OnClick() override;
 };
+
+class MI_DONT_WAIT_HEAT : public WI_SWITCH_OFF_ON_t {
+    constexpr static const char *const label = N_("Skip. Waiting heater?");
+
+public:
+    size_t GetIndex();
+    static size_t ReadCurrentState();
+    MI_DONT_WAIT_HEAT();
+    virtual void OnChange(size_t old_index) override;
+};
