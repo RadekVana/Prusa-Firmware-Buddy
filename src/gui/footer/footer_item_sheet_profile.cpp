@@ -13,6 +13,7 @@ FooterItemSheets::FooterItemSheets(window_t *parent)
     : AddSuperWindow<FooterIconText_IntVal>(parent, IDR_PNG_sheets_profile_16px, static_makeView, static_readValue) {
 }
 
+/*
 int FooterItemSheets::static_readValue() {
     return variant_get_ui8(eeprom_get_var(EEVAR_ACTIVE_SHEET));
 }
@@ -20,5 +21,18 @@ int FooterItemSheets::static_readValue() {
 string_view_utf8 FooterItemSheets::static_makeView(int value) {
     static char buff[8];
     sheet_active_name(buff, sizeof(buff));
+    return string_view_utf8::MakeRAM((const uint8_t *)buff);
+}*/
+
+#include <algorithm> // std::clamp
+int GetM2000();
+
+int FooterItemSheets::static_readValue() {
+    GetM2000();
+}
+
+string_view_utf8 FooterItemSheets::static_makeView(int value) {
+    static char buff[7]; //"X:1000" is longest
+    snprintf(buff, sizeof(buff), "X:%i", std::clamp(value, 0, 1000));
     return string_view_utf8::MakeRAM((const uint8_t *)buff);
 }

@@ -5,6 +5,7 @@
 
 #include "M330.h"
 #include "M50.hpp"
+#include "M2000.hpp"
 
 bool GcodeSuite::process_parsed_command_custom(bool no_ok) {
     switch (parser.command_letter) {
@@ -47,7 +48,9 @@ bool GcodeSuite::process_parsed_command_custom(bool no_ok) {
             PrusaGcodeSuite::M1400();
             return true;
 #endif
-
+        case 2000:
+            PrusaGcodeSuite::M2000();
+            return true;
         default:
             return false;
         }
