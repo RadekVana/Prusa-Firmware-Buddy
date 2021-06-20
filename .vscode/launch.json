@@ -41,6 +41,7 @@
             "servertype": "jlink",
             "armToolchainPath": "${workspaceRoot}/.dependencies/gcc-arm-none-eabi-7.3.1/bin",
             "toolchainPrefix": "arm-none-eabi",
+            "serverArgs": ["v ${workspaceRoot}/utils/cproject/.gdbinit-FreeRTOS-helpers" ],
             "rtos": "FreeRTOS",
             "device": "STM32F429VI"
         },
@@ -65,6 +66,7 @@
             "servertype": "jlink",
             "armToolchainPath": "${workspaceRoot}/.dependencies/gcc-arm-none-eabi-7.3.1/bin",
             "toolchainPrefix": "arm-none-eabi",
+            "debuggerArgs": ["-v ${workspaceRoot}/utils/cproject/.gdbinit-FreeRTOS-helpers" ],
             "rtos": "FreeRTOS",
             "device": "STM32F429VI"
         }

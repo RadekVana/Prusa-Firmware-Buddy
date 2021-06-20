@@ -12,7 +12,27 @@
 #include "screen_test_wizard_icons.hpp"
 #include "screen_test_dlg.hpp"
 
-//fererate stack overflow
+//some method to be put on stack
+//than divide by 0
+__attribute__((noinline)) static void method2(volatile int &i, volatile int &j) {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdiv-by-zero"
+    SCB->CCR |= SCB_CCR_DIV_0_TRP_Msk;
+    j = i / 0;
+#pragma GCC diagnostic pop
+    method2(i, j);
+}
+
+__attribute__((noinline)) static void method1(volatile int &i) {
+    method2(i, i);
+}
+
+__attribute__((noinline)) static void div0() {
+    volatile int i = 0;
+    method1(i);
+}
+
+//gererate stack overflow
 static volatile int _recursive = 1;
 static volatile void recursive(uint64_t i) {
     uint64_t x = i + (uint64_t)_recursive;
@@ -35,14 +55,7 @@ screen_test_data_t::screen_test_data_t()
     , tst_heat_err(this, this->GenerateRect(ShiftDir_t::Bottom), []() { /*("TEST BED ERROR", "Bed", 1.0, 2.0, 3.0, 4.0);*/ })
     , tst_disp_memory(this, this->GenerateRect(ShiftDir_t::Bottom), []() { /*screen_open(get_scr_test_disp_mem()->id);*/ })
     , tst_stack_overflow(this, this->GenerateRect(ShiftDir_t::Bottom), []() { recursive(0); })
-    , tst_stack_div0(this, this->GenerateRect(ShiftDir_t::Bottom), []() {
-        static volatile int i = 0;
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdiv-by-zero"
-        SCB->CCR |= SCB_CCR_DIV_0_TRP_Msk;
-        i = i / 0;
-#pragma GCC diagnostic pop
-    })
+    , tst_stack_div0(this, this->GenerateRect(ShiftDir_t::Bottom), []() { div0(); })
     , id_tim(gui_timer_create_oneshot(this, 2000))  //id0
     , id_tim1(gui_timer_create_oneshot(this, 2000)) //id0
 {

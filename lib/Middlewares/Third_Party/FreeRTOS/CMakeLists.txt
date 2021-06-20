@@ -4,6 +4,7 @@ endif()
 
 add_library(
   FreeRTOS
+  Source/cm3_debug_gdb_helper.c
   Source/CMSIS_RTOS/cmsis_os.c
   Source/croutine.c
   Source/event_groups.c
